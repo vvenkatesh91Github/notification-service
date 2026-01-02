@@ -37,6 +37,19 @@ Notification Service is a Spring Boot microservice designed to handle notificati
 ### Configuration
 - Edit `src/main/resources/application.properties` to configure notification channels, message broker, etc.
 
+#### Kafka Integration
+Add the following properties to your `application.properties` for Kafka integration:
+
+```properties
+spring.kafka.bootstrap-servers=127.0.0.1:9092
+spring.kafka.consumer.group-id=notification-group
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.ByteArrayDeserializer
+spring.kafka.consumer.auto-offset-reset=earliest
+```
+
+**Critical:** Don’t forget to add `@EnableKafka` in your configuration class — without it, `@KafkaListener` won’t work.
+
 ## Usage
 - The service listens for events such as `UserCreatedEvent` and `PasswordResetEvent`.
 - Upon receiving an event, it routes the event to the appropriate notification handler(s) (e.g., Email, SMS).
